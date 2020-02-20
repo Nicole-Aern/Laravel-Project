@@ -1,65 +1,101 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+<p align="center">My first project in LARAVEL</p>
+<p align="center">Laravel Framework 5.7.11</p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+1) Install MYSQL
+2) Install PHP 7.2
+3) Install Apache 2
+4) Install Workbench mysql  and create our database with the columns and fields that we want:
+<img src="https://raw.githubusercontent.com/Nicole-Aern/Laravel-Project/master/docs/images/workbench.png">
 
-## About Laravel
+5) Via Composer Create-Project:
+  a) composer install
+  b) composer update
+  c) composer create-project --prefer-dist laravel/laravel newproject
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+6) Before using Laravel's encrypter, you must set a key option in your config/app.phpconfiguration file. You should use the php artisan key:generate command to generate this key since this Artisan command will use PHP's secure random bytes generator to build your key
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+7) We set up a quick database so we can do all of our CRUD
+functionality:
+php artisan make:migration create_people_table
+<img src="https://raw.githubusercontent.com/Nicole-Aern/Laravel-Project/master/docs/images/workbench_2.png">
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+8) Now from the command line run this migration. Our database now has a people table to house all of the people we CRUD (create, read, update, and delete):
+<img src="https://raw.githubusercontent.com/Nicole-Aern/Laravel-Project/master/docs/images/workbench_3.png">
+  php artisan migrate
 
-## Learning Laravel
+We create all the fields that we want in our database
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+9) Create Eloquent model :
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Each database table has a corresponding "Model" which is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
 
-## Laravel Sponsors
+Models lives in the app directory
+In the app/models folder, let's create a People.php model:
+php artisan make:model People
+<img src="https://raw.githubusercontent.com/Nicole-Aern/Laravel-Project/master/docs/images/code.png">
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+10) Creating the Controller
+To create our Controller we have to use :
+php artisan make:controller PeopleController
+<img src="https://raw.githubusercontent.com/Nicole-Aern/Laravel-Project/master/docs/images/code_2.png">
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
+11) Setting Up the Routes
+With this Command we can see what list root we have :
+php artisan route:list
+<img src="https://raw.githubusercontent.com/Nicole-Aern/Laravel-Project/master/docs/images/cli_routes.png">
 
-## Contributing
+We have also and this for the roots :
+  route:cache
+  route:clear
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+We have also two different ways to create routes
 
-## Security Vulnerabilities
+  a) Route::resource('people', 'PeopleController');
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+  with this we create all RESTful action with one command
 
-## License
+  b) Route::get('/people', 'PeopleController@index');
+  Route::get('/people', 'PeopleController@create');
+  Route::post('/people', 'PeopleController@store');
+  Route::get('/people', 'PeopleController@show');
+  Route::get('/people', 'PeopleController@edit');
+  Route::put('/people', 'PeopleController@update');
+  Route::patch('/people', 'PeopleController@update');
+  Route::delete('/people', 'PeopleController@destroy');
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+12) Forms & HTML
+
+Begin by installing this package through Composer. Run the following
+from the Terminal:
+
+composer require "laravelcollective/html":"^5.7.11"
+
+Next, add your new provider to the providers array of config/app.php:
+
+  'providers' => [
+  // ...
+  Collective\Html\HtmlServiceProvider::class,
+  // ...
+  ],
+  Finally, add two class aliases to the aliases array of config/app.php:
+  'aliases' => [
+  // ...
+  'Form' => Collective\Html\FormFacade::class,
+  'Html' => Collective\Html\HtmlFacade::class,
+  // ...
+  ],
+
+13) When using {{ Form::open() }}, Laravel will automatically create a hidden input field with a token to protect from cross-site request CSRF forgeries.
+
+14) Routing
+Laravel provides a quick way to scaffold all of the routes and views you need for authentication using one simple command:
+php artisan make:auth
+
+15) Middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. 
+
+16) php artisan make:auth
+with this command we can make all of the routes and views you need for authentication .
+
+We create :LoginController, RegisterController, ResetPasswordController, and VerificationController
+
+Also the make:auth command will also create a resources/views/layouts directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
